@@ -1,2 +1,2 @@
 # projekt
-Django learning
+Django learning v.0.0.1
