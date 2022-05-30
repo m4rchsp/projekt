@@ -17,20 +17,37 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.http import HttpResponse
 from django.shortcuts import render
+from projekt.views import home, about
 
 # HTTP REQUEST
-def about(request):
-    # http response
-    return HttpResponse("ABOUT")
+from projekt import settings
 
-def home(request):
-    return render(request,'home.html') # buscou em base_templates
+
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('__debug__/', include('debug_toolbar.urls')),
+    #path('inventory/', include('inventory.urls')), # /inventory/
     path('inventory/', include('inventory.urls')), # /inventory/
     path('about/', about), # /about/
-    re_path(r"^$", home),
+    path('', include('pages/urls.py')), # / - root
+    # re_path(r"^$", home),
 
 ]
+
+# if settings.DEBUG:
+#     import debug_toolbar
+#     urlpatterns = [
+#         path('__debug__', include('debug_toolbar.urls')),
+#     ] + urlpatterns
+DEBUG_TOOLBAR_CONFIG = {
+    'DISABLE_PANELS': [
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ],
+    'SHOW_TEMPLATE_CONTEXT': True,
+}
+
+def show_toolbar(request):
+    return True
